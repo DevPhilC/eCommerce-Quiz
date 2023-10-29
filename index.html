@@ -1,0 +1,196 @@
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        ul {
+
+        }
+
+        li {
+        margin: 5px 0;
+        padding: 20px 0;
+        border-bottom-color: white;
+        background-color: #f1f1f1;
+        list-style-type: none;
+        display: flex;
+        }
+
+        input { 
+        margin: 0 15px;
+        height: 20px;
+        width: 20px;
+        background-color: red;
+        }
+
+        label {
+            font-size: 18.72px;
+            font-family:sans-serif;
+
+        }  
+        
+
+        #current-q-num {
+            margin: 20px auto;
+        }
+        #question {
+            margin-bottom: 20px;
+        }
+
+        #next {
+            
+            background-color: #4caf50;
+            margin: 20px 0;
+            padding: 15px 35px;
+            font-size: 18.72px;
+            color: white;
+            border: none;
+        }
+
+        #next:hover {
+            cursor: pointer;
+            background-color: green;
+        }
+
+        .quiz-container {
+            margin: 30px auto;
+            width: 95%;
+            height: 100%;
+
+        }
+
+    
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>eCommerce Quiz</h1>
+        <h2 id="current-q-num">Current Question Number</h2>
+        <h3 id="question">Question Text</h3>
+            <ul>
+                <li>
+                    <input type="radio" checked="checked" name="answer" id="a" class="answer">
+                    <label for="a" id="a_text">Answer</label>
+                </li>
+                <li>
+                    <input type="radio" name="answer" id="b" class="answer">
+                    <label for="b" id="b_text">Answer</label>
+                </li>
+                <li>
+                    <input type="radio" name="answer" id="c" class="answer">
+                    <label for="c" id="c_text">Answer</label>
+                </li>
+                <li>
+                    <input type="radio" name="answer" id="d" class="answer">
+                    <label for="d" id="d_text">Answer</label>
+                </li>
+            </ul>
+            <button id="next">Next ❯</button>
+
+
+    </div>
+    
+    <script>
+
+        const quizData = [
+            {
+                current: "Question 1 of 3",
+                question: "Question 1: Which of the following is not a real eCommerce platform?",
+                a: "Shopify",
+                b: "WooCommerce",
+                c: "ShopCommerce",
+                d: "BigCommerce",
+                correct: "c",
+            },
+            {
+                current: "Question 2 of 3",
+                question: "Question 2: If Shopify is so good, why are Shopify developers necessary?",
+                a: "To save time on things like store setups and migrations",
+                b: "To extend the limited design options and functionalities of themes with custom code",
+                c: "To provide support with a deep understanding of how the platform works and what its limitations are",
+                d: "All the above",
+                correct: "d",
+            },
+            {
+                current: "Question 3 of 3",
+                question: "Question 3: Which of the following is true about Shopify developers?",
+                a: "They are paid extremely well",
+                b: "There is a high demand for them",
+                c: "They need to know web development, the platform itself, and the liquid template language",
+                d: "All the above",
+                correct: "d",
+            },
+        ];
+        
+
+
+        const quiz = document.querySelector('.quiz-container')
+        const currentQuestionNum = document.getElementById('current-q-num');
+        const questionEls = document.getElementById('question');
+        const answerEl = document.querySelectorAll('.answer');
+        const a_text = document.getElementById('a_text');
+        const b_text = document.getElementById('b_text');
+        const c_text = document.getElementById('c_text');
+        const d_text = document.getElementById('d_text');
+        const submitBtn = document.getElementById('next');
+
+
+    
+
+
+        let currentQuiz = 0;
+        let score = 0;
+
+
+        
+        loadQuiz()
+
+        function loadQuiz() {
+
+
+            const currentQuizData = quizData[currentQuiz];
+            
+            currentQuestionNum.innerText = currentQuizData.current
+            questionEls.innerText = currentQuizData.question
+            a_text.innerText = currentQuizData.a
+            b_text.innerText = currentQuizData.b
+            c_text.innerText = currentQuizData.c
+            d_text.innerText = currentQuizData.d
+        }
+
+
+        function getSelected() {
+            let answer
+            answerEl.forEach(answerEl => {
+                if(answerEl.checked) {
+                    answer = answerEl.id
+                }
+            })
+            return answer
+        }
+
+
+        submitBtn.addEventListener('click', () => {
+            const answer = getSelected();
+            if(answer) {
+                if(answer === quizData[currentQuiz].correct) {
+                    score++
+                }
+                currentQuiz++
+
+                if(currentQuiz < quizData.length) {
+                    loadQuiz()
+                } else {
+                    quiz.innerHTML = `
+                    <h2>You answer ${score}/${quizData.length} questions correctly</h2>
+                    `
+                }
+
+            }
+        })
+
+
+
+    </script>
